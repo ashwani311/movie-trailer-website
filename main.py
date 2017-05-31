@@ -10,16 +10,20 @@ response = requests.request("GET", url + api_key, data=payload)
 json_data = json.loads(response.text)
 
 movies = []
-it = 0
+it = 0  # iterator
 for _ in xrange(6):
     while True:
         movie_data = json_data['results'][it]
         payload = "{}"
-        if movie_data['poster_path'] and movie_data['title'] and movie_data['id']:
-            url = video_url + str(movie_data['id'])+  "/videos?"+ api_key
+        if movie_data['poster_path'] \
+            and movie_data['title'] \
+                and movie_data['id']:
+            url = video_url + str(movie_data['id']) + "/videos?" + api_key
             response = requests.request("GET", url, data=payload)
             video_data = json.loads(response.text)
-            movie = Movie(movie_data['title'],movie_data['poster_path'],video_data['results'][-1]['key'])
+            movie = Movie(movie_data['title'],
+                          movie_data['poster_path'],
+                          video_data['results'][-1]['key'])
             movies.append(movie)
             break
     it += 1
